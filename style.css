@@ -1,0 +1,9 @@
+nav ul {
+	display: flex;
+}
+
+nav ul li {
+	display: inline;
+	flex-grow: 1;
+	list-style-type: none;
+}
