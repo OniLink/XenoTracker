@@ -1,9 +1,16 @@
+body {
+	margin: auto;
+	width: 90%;
+}
+
 nav ul {
 	display: flex;
+	padding: 0px;
 }
 
 nav ul li {
 	display: inline;
 	flex-grow: 1;
 	list-style-type: none;
+	text-align: center;
 }
