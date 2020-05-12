@@ -18,3 +18,11 @@ nav ul li {
 section {
 	margin-bottom: 1em;
 }
+
+td {
+	text-align: center;
+}
+
+td.right {
+	text-align: right;
+}
