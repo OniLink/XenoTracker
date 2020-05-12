@@ -43,7 +43,7 @@ const REGIONS = [
 var quest_db = null
 var quest_table = null
 
-function loadQuestDB( filename, finish_callback ) {
+function loadQuestDB( filename ) {
 	// Open the JSON file with an HTTP request
 	var http = new XMLHttpRequest();
 	http.open( "GET", filename );
@@ -68,7 +68,7 @@ function parseQuestDB( quests ) {
 
 function parseQuestDBCreateTableHeader( table ) {
 	var table_head = document.createElement( "thead" );
-	quest_table.appendChild( table_head );
+	table.appendChild( table_head );
 	var table_head_row = document.createElement( "tr" );
 	table_head.appendChild( table_head_row );
 
@@ -98,7 +98,7 @@ function parseQuestDBCreateTableHeader( table ) {
 
 	// Prereq quests
 	new_element = document.createElement( "th" );
-	new_element.textContent = "Prerequisite quest";
+	new_element.textContent = "Prerequisite Quest";
 	table_head_row.appendChild( new_element );
 
 	// Fame region
@@ -110,6 +110,9 @@ function parseQuestDBCreateTableHeader( table ) {
 	new_element = document.createElement( "th" );
 	new_element.textContent = "Fame Requirement";
 	table_head_row.appendChild( new_element );
+
+	/// @todo NPC Meet 1 + 2
+	/// @todo Affinity Link + Status
 }
 
 function parseQuestDBCreateTableBody( table, quests ) {

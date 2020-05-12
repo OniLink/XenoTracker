@@ -19,10 +19,25 @@ section {
 	margin-bottom: 1em;
 }
 
+table {
+	border-collapse: collapse;
+}
+
+th, td {
+	border: 1px solid black;
+	padding: 4px;
+}
+
 td {
 	text-align: center;
 }
 
 td.right {
 	text-align: right;
+}
+
+.spoiler:not(:hover) {
+	background-color: gray;
+	color: gray;
+	transition: background-color 0.1s, color 0.1s;
 }
