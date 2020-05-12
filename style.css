@@ -36,6 +36,10 @@ td.right {
 	text-align: right;
 }
 
+.spoiler {
+	transition: background-color 0.1s, color 0.1s;
+}
+
 .spoiler:not(:hover) {
 	background-color: gray;
 	color: gray;
