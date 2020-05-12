@@ -171,6 +171,9 @@ function parseQuestDBCreateTableBody( table, quests ) {
 			new_element.textContent = String( parseInt( quests[ quest_index ].quest_fame_req ) / 2000.0 + 1.0 ) + " star(s)";
 		}
 		quest_row.appendChild( new_element );
+
+		/// @todo NPC Meet 1 + 2
+		/// @todo Affinity Link + Status
 	}
 }
 
