@@ -94,7 +94,14 @@ function parseQuestDBCreateTableHeader( table ) {
 	new_element.textContent = "Area";
 	table_head_row.appendChild( new_element );
 
-	/// @todo Story Progress
+	// Story Progress
+	new_element = document.createElement( "th" );
+	new_element.textContent = "Story Chapter";
+	table_head_row.appendChild( new_element );
+
+	new_element = document.createElement( "th" );
+	new_element.textContent = "Story Progress";
+	table_head_row.appendChild( new_element );
 
 	// Prereq quests
 	new_element = document.createElement( "th" );
@@ -146,7 +153,22 @@ function parseQuestDBCreateTableBody( table, quests ) {
 		new_element.textContent = MAPS[ parseInt( quests[ quest_index ].map_id ) ];
 		quest_row.appendChild( new_element );
 
-		/// @todo Story Progress
+		// Story Progress
+		new_element = document.createElement( "td" );
+		if( quests[ quest_index ].story_flag > 0 ) {
+			new_element.textContent = quests[ quest_index ].story_ch;
+		} else {
+			new_element.textContent = "N/A";
+		}
+		quest_row.appendChild( new_element );
+
+		new_element = document.createElement( "td" );
+		if( quests[ quest_index ].story_flag > 0 ) {
+			new_element.textContent = quests[ quest_index ].story_beat;
+		} else {
+			new_element.textContent = "N/A";
+		}
+		quest_row.appendChild( new_element );
 
 		// Prereq quests
 		new_element = document.createElement( "td" );
@@ -168,7 +190,11 @@ function parseQuestDBCreateTableBody( table, quests ) {
 		if( parseInt( quests[ quest_index ].quest_fame_region_id ) == 0 ) {
 			new_element.textContent = "N/A";
 		} else {
-			new_element.textContent = String( parseInt( quests[ quest_index ].quest_fame_req ) / 2000.0 + 1.0 ) + " star(s)";
+			var stars = parseInt( quests[ quest_index ].quest_fame_req ) / 2000.0 + 1.0;
+			new_element.textContent = String( parseInt( quests[ quest_index ].quest_fame_req ) / 2000.0 + 1.0 ) + " star";
+			if( stars != 1.0 ) {
+				new_element.textContent += "s";
+			}
 		}
 		quest_row.appendChild( new_element );
 

@@ -107,7 +107,15 @@ function parseH2HDBCreateTableHeader( table ) {
 	table_head_row.appendChild( new_element );
 	
 	/// @todo Time
-	/// @todo Story Beat
+	
+	// Story Beat
+	new_element = document.createElement( "th" );
+	new_element.textContent = "Story Chapter";
+	table_head_row.appendChild( new_element );
+
+	new_element = document.createElement( "th" );
+	new_element.textContent = "Story Progress";
+	table_head_row.appendChild( new_element );
 
 	// Map
 	new_element = document.createElement( "th" );
@@ -154,7 +162,23 @@ function parseH2HDBCreateTableBody( table, h2hs ) {
 		new_row.appendChild( new_element );
 		
 		/// @todo Time
-		/// @todo Story Beat
+		
+		// Story Beat
+		new_element = document.createElement( "td" );
+		if( h2hs[ index ].story_flag > 0 ) {
+			new_element.textContent = h2hs[ index ].story_ch;
+		} else {
+			new_element.textContent = "N/A";
+		}
+		new_row.appendChild( new_element );
+
+		new_element = document.createElement( "td" );
+		if( h2hs[ index ].story_flag > 0 ) {
+			new_element.textContent = h2hs[ index ].story_beat;
+		} else {
+			new_element.textContent = "N/A";
+		}
+		new_row.appendChild( new_element );
 		
 		// Map
 		new_element = document.createElement( "td" );
