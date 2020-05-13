@@ -87,7 +87,10 @@ function parseQuestDBCreateTableHeader( table ) {
 	new_element.textContent = "Type";
 	table_head_row.appendChild( new_element );
 
-	/// @todo Quest Giver
+	// Quest Giver
+	new_element = document.createElement( "th" );
+	new_element.textContent = "Client";
+	table_head_row.appendChild( new_element );
 
 	// Area
 	new_element = document.createElement( "th" );
@@ -146,7 +149,10 @@ function parseQuestDBCreateTableBody( table, quests ) {
 		new_element.textContent = GENRES[ parseInt( quests[ quest_index ].genre_id ) ];
 		quest_row.appendChild( new_element );
 
-		/// @todo Quest Giver
+		// Quest Giver
+		new_element = document.createElement( "td" );
+		new_element.textContent = quests[ quest_index ].npc_name;
+		quest_row.appendChild( new_element );
 
 		// Area
 		new_element = document.createElement( "td" );
