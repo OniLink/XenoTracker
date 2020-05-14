@@ -42,6 +42,8 @@ const REGIONS = [
 // Easy-access globals
 var quest_db = null
 var quest_table = null
+var quest_rows = [];
+var quest_subrows = [];
 
 // Helper Functions
 function addTableElement( row, type, value ) {
@@ -82,16 +84,17 @@ function parseQuestDBCreateTableHeader( table ) {
 	head.appendChild( row );
 
 	// Add headers
-	addTableElement( row, "th", "#" );                            // Quest number
-	addTableElement( row, "th", "Title" );                        // Quest title
-	addTableElement( row, "th", "Type" );                         // Genre
-	addTableElement( row, "th", "Client" );                       // Client
-	addTableElement( row, "th", "Area" );                         // Area
-	addTableElement( row, "th", "Story Progress" ).colSpan = 2;   // Story Progress
-	addTableElement( row, "th", "Prerequisite Quest" );           // Quest prereq
-	addTableElement( row, "th", "Fame Requirement" ).colSpan = 2; // Fame requirement
-	addTableElement( row, "th", "Meet NPCs" ).colSpan = 2;        // NPC Meet
-	addTableElement( row, "th", "Affinity Link" ).colSpan = 3;    // Affinity Link
+	addTableElement( row, "th", "" ).classList.add( "hidden-cell" ); // Empty spot for the check box
+	addTableElement( row, "th", "#" );                               // Quest number
+	addTableElement( row, "th", "Title" );                           // Quest title
+//	addTableElement( row, "th", "Type" );                         // Genre
+	addTableElement( row, "th", "Client" );                          // Client
+	addTableElement( row, "th", "Area" );                            // Area
+//	addTableElement( row, "th", "Story Progress" ).colSpan = 2;   // Story Progress
+//	addTableElement( row, "th", "Prerequisite Quest" );           // Quest prereq
+//	addTableElement( row, "th", "Fame Requirement" ).colSpan = 2; // Fame requirement
+//	addTableElement( row, "th", "Meet NPCs" ).colSpan = 2;        // NPC Meet
+//	addTableElement( row, "th", "Affinity Link" ).colSpan = 3;    // Affinity Link
 }
 
 function parseQuestDBCreateTableBody( table, quests ) {
@@ -101,18 +104,13 @@ function parseQuestDBCreateTableBody( table, quests ) {
 	for( quest_index in quests ) {
 		var row = document.createElement( "tr" );
 		table_body.appendChild( row );
-		var elem = null;
+
+		addQuestHeadData( row, quest_index, quests );
+		quest_rows.push( row );
 
 		// Compute data
-		var num = String( parseInt( quest_index ) + 1 );
-		
-		var title = quests[ quest_index ].title;
-		
+		/*
 		var genre = GENRES[ parseInt( quests[ quest_index ].genre_id ) ];
-		
-		var client = quests[ quest_index ].npc_name;
-		
-		var area = MAPS[ parseInt( quests[ quest_index ].map_id ) ];
 
 		var story_ch = "N/A";
 		var story_beat = "N/A";
@@ -156,11 +154,7 @@ function parseQuestDBCreateTableBody( table, quests ) {
 		}
 
 		// Add columns
-		addTableElement( row, "td", num ).className += " right"; // Quest number
-		addTableElement( row, "td", title );                     // Quest title
 		addTableElement( row, "td", genre );                     // Genre
-		addTableElement( row, "td", client );                    // Client
-		addTableElement( row, "td", area );                      // Area
 		addTableElement( row, "td", story_ch );                  // Story chapter
 		addTableElement( row, "td", story_beat );                // Story beat
 		addTableElement( row, "td", prereq_quest_title );        // Prereq quest
@@ -171,7 +165,21 @@ function parseQuestDBCreateTableBody( table, quests ) {
 		addTableElement( row, "td", ac_link_char1 );             // ALink NPC #1
 		addTableElement( row, "td", ac_link_char2 );             // ALink NPC #2
 		addTableElement( row, "td", ac_link_status );            // ALink Status
+		*/
 	}
+}
+
+function addQuestHeadData( row, index, quests ) {
+	var num = String( parseInt( index ) + 1 ); // what is wrong with Javascript
+	var title = quests[ index ].title;
+	var client = quests[ index ].client;
+	var area = MAPS[ quests[ index ].map_id ];
+
+	// Add the columns
+	addTableElement( row, "td", num ).className += " right";
+	addTableElement( row, "td", title );
+	addTableElement( row, "td", client );
+	addTableElement( row, "td", area );
 }
 
 // Load the quest database

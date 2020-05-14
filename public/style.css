@@ -36,6 +36,10 @@ td.right {
 	text-align: right;
 }
 
+.hidden-cell {
+	border: 0px;
+}
+
 .spoiler {
 	transition: background-color 0.1s, color 0.1s;
 }

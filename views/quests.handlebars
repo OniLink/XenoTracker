@@ -1,0 +1,28 @@
+<section>
+	WARNING: This page <em>DOES</em> contain implicit spoilers in the story
+	progress column! Exercise caution!
+</section>
+<section id="quest-table">
+	<table>
+		<thead>
+			<tr>
+				<th class="hidden-cell"></th>
+				<th class="right">#</th>
+				<th>Title</th>
+				<th>Client</th>
+				<th>Area</th>
+			</tr>
+		</thead>
+		<tbody>
+			{{#each quests}}
+			<tr id="quest-{{this.quest_num}}">
+				<td></td>
+				<td>{{this.quest_num}}</td>
+				<td>{{this.title}}</td>
+				<td>{{this.client}}</td>
+				<td>{{this.map}}</td>
+			</tr>
+			{{/each}}
+		</tbody>
+	</table>
+</section>
