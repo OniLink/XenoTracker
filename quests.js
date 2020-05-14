@@ -43,6 +43,15 @@ const REGIONS = [
 var quest_db = null
 var quest_table = null
 
+// Helper Functions
+function addTableElement( row, type, value ) {
+	var element = document.createElement( type );
+	element.textContent = value;
+	row.appendChild( element );
+	return element;
+}
+
+// Loader Functions
 function loadQuestDB( filename ) {
 	// Open the JSON file with an HTTP request
 	var http = new XMLHttpRequest();
@@ -67,62 +76,22 @@ function parseQuestDB( quests ) {
 }
 
 function parseQuestDBCreateTableHeader( table ) {
-	var table_head = document.createElement( "thead" );
-	table.appendChild( table_head );
-	var table_head_row = document.createElement( "tr" );
-	table_head.appendChild( table_head_row );
+	var head = document.createElement( "thead" );
+	table.appendChild( head );
+	var row = document.createElement( "tr" );
+	head.appendChild( row );
 
-	// Quest Number
-	var new_element = document.createElement( "th" );
-	new_element.textContent = "#";
-	table_head_row.appendChild( new_element );
-
-	// Quest Name
-	new_element = document.createElement( "th" );
-	new_element.textContent = "Quest Name";
-	table_head_row.appendChild( new_element );
-
-	// Quest Genre
-	new_element = document.createElement( "th" );
-	new_element.textContent = "Type";
-	table_head_row.appendChild( new_element );
-
-	// Quest Giver
-	new_element = document.createElement( "th" );
-	new_element.textContent = "Client";
-	table_head_row.appendChild( new_element );
-
-	// Area
-	new_element = document.createElement( "th" );
-	new_element.textContent = "Area";
-	table_head_row.appendChild( new_element );
-
-	// Story Progress
-	new_element = document.createElement( "th" );
-	new_element.textContent = "Story Chapter";
-	table_head_row.appendChild( new_element );
-
-	new_element = document.createElement( "th" );
-	new_element.textContent = "Story Progress";
-	table_head_row.appendChild( new_element );
-
-	// Prereq quests
-	new_element = document.createElement( "th" );
-	new_element.textContent = "Prerequisite Quest";
-	table_head_row.appendChild( new_element );
-
-	// Fame region
-	new_element = document.createElement( "th" );
-	new_element.textContent = "Fame Region";
-	table_head_row.appendChild( new_element );
-
-	// Fame requirement
-	new_element = document.createElement( "th" );
-	new_element.textContent = "Fame Requirement";
-	table_head_row.appendChild( new_element );
-
-	/// @todo NPC Meet 1 + 2
-	/// @todo Affinity Link + Status
+	// Add headers
+	addTableElement( row, "th", "#" );                            // Quest number
+	addTableElement( row, "th", "Title" );                        // Quest title
+	addTableElement( row, "th", "Type" );                         // Genre
+	addTableElement( row, "th", "Client" );                       // Client
+	addTableElement( row, "th", "Area" );                         // Area
+	addTableElement( row, "th", "Story Progress" ).colSpan = 2;   // Story Progress
+	addTableElement( row, "th", "Prerequisite Quest" );           // Quest prereq
+	addTableElement( row, "th", "Fame Requirement" ).colSpan = 2; // Fame requirement
+	addTableElement( row, "th", "Meet NPCs" ).colSpan = 2;        // NPC Meet
+	addTableElement( row, "th", "Affinity Link" ).colSpan = 3;    // Affinity Link
 }
 
 function parseQuestDBCreateTableBody( table, quests ) {
@@ -130,82 +99,78 @@ function parseQuestDBCreateTableBody( table, quests ) {
 	table.appendChild( table_body );
 
 	for( quest_index in quests ) {
-		var quest_row = document.createElement( "tr" );
-		table_body.appendChild( quest_row );
+		var row = document.createElement( "tr" );
+		table_body.appendChild( row );
+		var elem = null;
 
-		// Quest Number
-		var new_element = document.createElement( "td" );
-		new_element.className += " right";
-		new_element.textContent = String( parseInt( quest_index ) + 1 ); // Why JS why
-		quest_row.appendChild( new_element );
+		// Compute data
+		var num = String( parseInt( quest_index ) + 1 );
+		
+		var title = quests[ quest_index ].title;
+		
+		var genre = GENRES[ parseInt( quests[ quest_index ].genre_id ) ];
+		
+		var client = quests[ quest_index ].npc_name;
+		
+		var area = MAPS[ parseInt( quests[ quest_index ].map_id ) ];
 
-		// Quest Name
-		new_element = document.createElement( "td" );
-		new_element.textContent = quests[ quest_index ].title;
-		quest_row.appendChild( new_element );
-
-		// Quest Genre
-		new_element = document.createElement( "td" );
-		new_element.textContent = GENRES[ parseInt( quests[ quest_index ].genre_id ) ];
-		quest_row.appendChild( new_element );
-
-		// Quest Giver
-		new_element = document.createElement( "td" );
-		new_element.textContent = quests[ quest_index ].npc_name;
-		quest_row.appendChild( new_element );
-
-		// Area
-		new_element = document.createElement( "td" );
-		new_element.textContent = MAPS[ parseInt( quests[ quest_index ].map_id ) ];
-		quest_row.appendChild( new_element );
-
-		// Story Progress
-		new_element = document.createElement( "td" );
+		var story_ch = "N/A";
+		var story_beat = "N/A";
 		if( quests[ quest_index ].story_flag > 0 ) {
-			new_element.textContent = quests[ quest_index ].story_ch;
-		} else {
-			new_element.textContent = "N/A";
+			story_ch = "Chapter " + quests[ quest_index ].story_ch;
+			story_beat = quests[ quest_index ].story_beat;
 		}
-		quest_row.appendChild( new_element );
 
-		new_element = document.createElement( "td" );
-		if( quests[ quest_index ].story_flag > 0 ) {
-			new_element.textContent = quests[ quest_index ].story_beat;
-		} else {
-			new_element.textContent = "N/A";
+		var prereq_quest_title = "N/A";
+		if( parseInt( quests[ quest_index ].quest_req_id ) > 0 ) {
+			prereq_quest_title = quests.find( element => parseInt( element.internal_id ) == parseInt( quests[ quest_index ].quest_req_id ) ).title;
 		}
-		quest_row.appendChild( new_element );
 
-		// Prereq quests
-		new_element = document.createElement( "td" );
-		if( parseInt( quests[ quest_index ].quest_req_id ) == 0 ) {
-			new_element.textContent = "N/A";
-		} else {
-			var found_prereq_quest = quests.find( element => parseInt( element.internal_id ) == parseInt( quests[ quest_index ].quest_req_id ) );
-			new_element.textContent = found_prereq_quest.title;
-		}
-		quest_row.appendChild( new_element );
-
-		// Fame region
-		new_element = document.createElement( "td" );
-		new_element.textContent = REGIONS[ parseInt( quests[ quest_index ].quest_fame_region_id ) ];
-		quest_row.appendChild( new_element );
-
-		// Fame requirement
-		new_element = document.createElement( "td" );
-		if( parseInt( quests[ quest_index ].quest_fame_region_id ) == 0 ) {
-			new_element.textContent = "N/A";
-		} else {
+		var fame_region = REGIONS[ parseInt( quests[ quest_index ].quest_fame_region_id ) ];
+		var fame_stars = "N/A";
+		if( parseInt( quests[ quest_index ].quest_fame_region_id ) > 0 ) {
 			var stars = parseInt( quests[ quest_index ].quest_fame_req ) / 2000.0 + 1.0;
-			new_element.textContent = String( parseInt( quests[ quest_index ].quest_fame_req ) / 2000.0 + 1.0 ) + " star";
+			fame_stars = String( stars ) + " star";
 			if( stars != 1.0 ) {
-				new_element.textContent += "s";
+				fame_stars += "s";
 			}
 		}
-		quest_row.appendChild( new_element );
 
-		/// @todo NPC Meet 1 + 2
-		/// @todo Affinity Link + Status
+		var npc_meet1 = "N/A";
+		if( quests[ quest_index ].npc_meet1 ) {
+			npc_meet1 = quests[ quest_index ].npc_meet1;
+		}
+
+		var npc_meet2 = "N/A";
+		if( quests[ quest_index ].npc_meet2 ) {
+			npc_meet2 = quests[ quest_index ].npc_meet2;
+		}
+
+		var ac_link_char1 = "N/A";
+		var ac_link_char2 = "N/A";
+		var ac_link_status = "N/A";
+		if( quests[ quest_index ].ac_link_id ) {
+			ac_link_char1 = quests[ quest_index ].ac_link_char1;
+			ac_link_char2 = quests[ quest_index ].ac_link_char2;
+			ac_link_status = quests[ quest_index ].ac_link_status;
+		}
+
+		// Add columns
+		addTableElement( row, "td", num ).className += " right"; // Quest number
+		addTableElement( row, "td", title );                     // Quest title
+		addTableElement( row, "td", genre );                     // Genre
+		addTableElement( row, "td", client );                    // Client
+		addTableElement( row, "td", area );                      // Area
+		addTableElement( row, "td", story_ch );                  // Story chapter
+		addTableElement( row, "td", story_beat );                // Story beat
+		addTableElement( row, "td", prereq_quest_title );        // Prereq quest
+		addTableElement( row, "td", fame_region );               // Fame region
+		addTableElement( row, "td", fame_stars );                // Fame stars
+		addTableElement( row, "td", npc_meet1 );                 // NPC Meet #1
+		addTableElement( row, "td", npc_meet2 );                 // NPC Meet #2
+		addTableElement( row, "td", ac_link_char1 );             // ALink NPC #1
+		addTableElement( row, "td", ac_link_char2 );             // ALink NPC #2
+		addTableElement( row, "td", ac_link_status );            // ALink Status
 	}
 }
 
