@@ -9,10 +9,22 @@ nav ul {
 }
 
 nav ul li {
+	background-color: black;
 	display: inline;
 	flex-grow: 1;
 	list-style-type: none;
 	text-align: center;
+	transition: background-color 0.2s;
+}
+
+nav ul li:hover {
+	background-color: gray;
+}
+
+nav ul li a {
+	color: white;
+	display: block;
+	text-decoration: none;
 }
 
 section {
@@ -48,4 +60,12 @@ td.right {
 	background-color: gray;
 	color: gray;
 	transition: background-color 0.1s, color 0.1s;
+}
+
+tr {
+	transition: 0.2s;
+}
+
+tr.row-complete {
+	background-color: green;
 }

@@ -7,7 +7,7 @@
 		<thead>
 			<tr>
 				<th class="hidden-cell"></th>
-				<th class="right">#</th>
+				<th>#</th>
 				<th>Title</th>
 				<th>Client</th>
 				<th>Area</th>
@@ -15,14 +15,17 @@
 		</thead>
 		<tbody>
 			{{#each quests}}
-			<tr id="quest-{{this.quest_num}}">
-				<td></td>
-				<td>{{this.quest_num}}</td>
+			<tr id="quest-{{this.quest_num}}" class="quest-row">
+				<td><input type="checkbox" id="quest-comp-{{this.quest_num}}" onchange="onQuestMarkerChange( this )"></td>
+				<td class="right">{{this.quest_num}}</td>
 				<td>{{this.title}}</td>
 				<td>{{this.client}}</td>
 				<td>{{this.map}}</td>
+				<!-- Subrow: genre, story_ch/beat, prereq_quest_title, fame_region/stars -->
+				<!-- npc_meet1/2, ac_link_char1/char2/status -->
 			</tr>
 			{{/each}}
 		</tbody>
 	</table>
 </section>
+<script src="quests.js"></script>
