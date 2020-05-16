@@ -6,7 +6,7 @@
 	<table>
 		<thead>
 			<tr>
-				<th class="hidden-cell"></th>
+				<th class="hidden-cell"><button onclick="onClearQuests()">Reset</button></th>
 				<th>#</th>
 				<th>Title</th>
 				<th>Client</th>
@@ -16,7 +16,7 @@
 		<tbody>
 			{{#each quests}}
 			<tr id="quest-{{this.quest_num}}" class="quest-row">
-				<td><input type="checkbox" id="quest-comp-{{this.quest_num}}" onchange="onQuestMarkerChange( this )"></td>
+				<td><input type="checkbox" id="quest-comp-{{this.quest_num}}" onchange="onQuestMarkerChange( this, {{this.quest_num}} )"></td>
 				<td class="right">{{this.quest_num}}</td>
 				<td>{{this.title}}</td>
 				<td>{{this.client}}</td>

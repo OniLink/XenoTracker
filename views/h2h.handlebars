@@ -7,7 +7,7 @@
 <section id="h2h-table">
 	<table>
 		<thead>
-			<th class="hidden-cell"></th>
+			<th class="hidden-cell"><button onclick="onClearH2Hs()">Reset</button></th>
 			<th>#</th>
 			<th>Title</th>
 			<th colspan=2>Characters</th>
@@ -16,7 +16,7 @@
 		<tbody>
 			{{#each h2hs}}
 			<tr id="h2h-{{this.sort_id}}" class="h2h-row">
-				<td><input type="checkbox" id="h2h-comp-{{this.sort_id}}" onchange="onH2HMarkerChange( this )"></td>
+				<td><input type="checkbox" id="h2h-comp-{{this.sort_id}}" onchange="onH2HMarkerChange( this, {{this.sort_id}} )"></td>
 				<td>{{this.sort_id}}</td>
 				<td>{{this.title}}</td>
 				<td>{{this.first_char}}</td>
