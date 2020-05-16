@@ -42,22 +42,12 @@ function onClearH2Hs() {
 /********************
  * HELPER FUNCTIONS *
  ********************/
-// Sort a table with Bubble Sort
 function sortTable( table_rows, sort_func ) {
-	// Bubble Sort!
-	var swapped;
-	do {
-		swapped = false;
-		for( var index = 0; index < table_rows.length - 1; ++index ) {
-			if( !sort_func( table_rows[ index ], table_rows[ index + 1 ] ) ) {
-				// Swap unsorted elements
-				var row1 = table_rows[ index ];
-				var row2 = table_rows[ index + 1 ];
-				row1.parentElement.insertBefore( row2, row1 );
-				swapped = true;
-			}
-		}
-	} while( swapped );
+	var parent = table_rows[ 0 ].parentElement;
+	var arrayed_elements = [].slice.call( table_rows ); // Workaround to convert the table to an array
+	arrayed_elements.sort( sort_func ); // Sort
+	arrayed_elements.forEach( element => parent.appendChild( element ) ); // And put the elements back in
+	// Since appendChild removes the element from its previous parent, the old ordering is erased automatically
 }
 
 // Check if a row contains spoilers
@@ -67,6 +57,80 @@ function hasSpoiler( row ) {
 	const SPOILER_NAME = "Machina Fiora";
 	var elements = row.getElementsByTagName( "td" );
 	return elements[ INDEX_CHAR1 ].textContent === SPOILER_NAME || elements[ INDEX_CHAR2 ].textContent === SPOILER_NAME;
+}
+
+/******************
+ * SORT FUNCTIONS *
+ ******************/
+function sortByNum() {
+	sortTable( h2h_rows, function( row1, row2 ) {
+		const INDEX_NUM = 1;
+		var num_1 = parseInt( row1.getElementsByTagName( "td" )[ INDEX_NUM ].textContent );
+		var num_2 = parseInt( row2.getElementsByTagName( "td" )[ INDEX_NUM ].textContent );
+		return num_1 > num_2;
+	} );
+}
+
+function sortByTitle() {
+	sortTable( h2h_rows, function( row1, row2 ) {
+		const INDEX_TITLE = 2;
+		var title_1 = row1.getElementsByTagName( "td" )[ INDEX_TITLE ].textContent;
+		var title_2 = row2.getElementsByTagName( "td" )[ INDEX_TITLE ].textContent;
+		return title_1 > title_2;
+	} );
+}
+
+function sortByCharacters() {
+	sortTable( h2h_rows, function( row1, row2 ) {
+		const CHARS = [
+			"Shulk",
+			"Reyn",
+			"Fiora",
+			"Dunban",
+			"Sharla",
+			"Riki",
+			"Melia",
+			"Machina Fiora"
+		];
+
+		const INDEX_CHAR1 = 3;
+		const INDEX_CHAR2 = 4;
+
+		var char1a = row1.getElementsByTagName( "td" )[ INDEX_CHAR1 ].textContent;
+		var char1b = row1.getElementsByTagName( "td" )[ INDEX_CHAR2 ].textContent;
+		var char2a = row2.getElementsByTagName( "td" )[ INDEX_CHAR1 ].textContent;
+		var char2b = row2.getElementsByTagName( "td" )[ INDEX_CHAR2 ].textContent;
+
+		char1a = CHARS.indexOf( char1a );
+		char1b = CHARS.indexOf( char1b );
+		char2a = CHARS.indexOf( char2a );
+		char2b = CHARS.indexOf( char2b );
+
+		// Prioritize the primary, then the secondary
+		return char1a > char2a || ( char1a == char2a && char1b > char2b );
+	} );
+}
+
+function sortByAffinity() {
+	sortTable( h2h_rows, function( row1, row2 ) {
+		const AFFINITY = [
+			"Yellow",
+			"Green",
+			"Blue",
+			"White",
+			"Pink"
+		];
+
+		const INDEX_AFFINITY = 5;
+
+		var aff1 = row1.getElementsByTagName( "td" )[ INDEX_AFFINITY ].textContent;
+		var aff2 = row2.getElementsByTagName( "td" )[ INDEX_AFFINITY ].textContent;
+
+		aff1 = AFFINITY.indexOf( aff1 );
+		aff2 = AFFINITY.indexOf( aff2 );
+
+		return aff1 > aff2;
+	} );
 }
 
 /**************
@@ -84,12 +148,7 @@ if( !storage_enabled ) {
 }
 
 // Initial sort
-sortTable( h2h_rows, function( row1, row2 ) {
-	const cut_size = "h2h-".length;
-	var num_1 = parseInt( row1.id.slice( cut_size ) );
-	var num_2 = parseInt( row2.id.slice( cut_size ) );
-	return num_1 < num_2;
-} );
+sortByNum();
 
 // Initialize rows
 for( var index = 0; index < h2h_rows.length; ++index ) {

@@ -8,10 +8,10 @@
 	<table>
 		<thead>
 			<th class="hidden-cell"><button onclick="onClearH2Hs()">Reset</button></th>
-			<th>#</th>
-			<th>Title</th>
-			<th colspan=2>Characters</th>
-			<th>Affinity</th>
+			<th onclick="sortByNum()">#</th>
+			<th onclick="sortByTitle()">Title</th>
+			<th colspan=2 onclick="sortByCharacters()">Characters</th>
+			<th onclick="sortByAffinity()">Affinity</th>
 		</thead>
 		<tbody>
 			{{#each h2hs}}

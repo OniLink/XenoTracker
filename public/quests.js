@@ -38,6 +38,56 @@ function onClearQuests() {
 	}
 }
 
+/********************
+ * HELPER FUNCTIONS *
+ ********************/
+function sortTable( table_rows, sort_func ) {
+	var parent = table_rows[ 0 ].parentElement;
+	var arrayed_elements = [].slice.call( table_rows ); // Workaround to convert the table to an array
+	arrayed_elements.sort( sort_func ); // Sort
+	arrayed_elements.forEach( element => parent.appendChild( element ) ); // And put the elements back in
+	// Since appendChild removes the element from its previous parent, the old ordering is erased automatically
+}
+
+/******************
+ * SORT FUNCTIONS *
+ ******************/
+function sortByNum() {
+	sortTable( quest_rows, function( row1, row2 ) {
+		const INDEX_NUM = 1;
+		var num_1 = parseInt( row1.getElementsByTagName( "td" )[ INDEX_NUM ].textContent );
+		var num_2 = parseInt( row2.getElementsByTagName( "td" )[ INDEX_NUM ].textContent );
+		return num_1 > num_2;
+	} );
+}
+
+function sortByTitle() {
+	sortTable( quest_rows, function( row1, row2 ) {
+		const INDEX_TITLE = 2;
+		var title_1 = row1.getElementsByTagName( "td" )[ INDEX_TITLE ].textContent;
+		var title_2 = row2.getElementsByTagName( "td" )[ INDEX_TITLE ].textContent;
+		return title_1 > title_2;
+	} );
+}
+
+function sortByClient() {
+	sortTable( quest_rows, function( row1, row2 ) {
+		const INDEX_CLIENT = 3;
+		var client_1 = row1.getElementsByTagName( "td" )[ INDEX_CLIENT ].textContent;
+		var client_2 = row2.getElementsByTagName( "td" )[ INDEX_CLIENT ].textContent;
+		return client_1 > client_2;
+	} );
+}
+
+function sortByArea() {
+	sortTable( quest_rows, function( row1, row2 ) {
+		const INDEX_AREA = 4;
+		var area_1 = row1.getElementsByTagName( "td" )[ INDEX_AREA ].textContent;
+		var area_2 = row2.getElementsByTagName( "td" )[ INDEX_AREA ].textContent;
+		return area_1 > area_2;
+	} );
+}
+
 /**************
  * INITIALIZE *
  **************/
