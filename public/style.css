@@ -3,6 +3,10 @@ body {
 	width: 90%;
 }
 
+nav {
+	font-size: small;
+}
+
 nav ul {
 	display: flex;
 	padding: 0px;
@@ -44,6 +48,10 @@ td {
 	text-align: center;
 }
 
+td.left {
+	text-align: left;
+}
+
 td.right {
 	text-align: right;
 }
@@ -66,6 +74,6 @@ tr {
 	transition: 0.2s;
 }
 
-tr.row-complete {
+.row-complete {
 	background-color: green;
 }

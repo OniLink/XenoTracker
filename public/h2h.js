@@ -1,14 +1,13 @@
 /***********
  * GLOBALS *
  ***********/
-var h2h_rows = document.getElementsByClassName( "h2h-row" );
+var h2h_rows = document.getElementsByClassName( "h2h-container" );
 var save_data = null;
 var storage_enabled = typeof( Storage ) !== "undefined";
 
 /*************
  * CALLBACKS *
  *************/
-// Callback: When completion checkboxes are clicked
 function onH2HMarkerChange( checkbox, index ) {
 	var row = checkbox.parentElement.parentElement;
 	index = index - 1; // Switch from 1-index to 0-index
@@ -31,11 +30,9 @@ function onClearH2Hs() {
 	const INDEX_CHECK = 0;
 
 	for( var index = 0; index < h2h_rows.length; ++index ) {
-		var elements = h2h_rows[ index ].getElementsByTagName( "td" );
-		var checkbox = elements[ INDEX_CHECK ].getElementsByTagName( "input" )[ 0 ];
-
+		var checkbox = getH2HColumn( h2h_rows[ index ], INDEX_CHECK ).getElementsByTagName( "input" )[ 0 ];
 		checkbox.checked = false;
-		onH2HMarkerChange( checkbox, index + 1 ); // Add 1 because it takes H2H number, not index, blame Handlebars
+		onH2HMarkerChange( checkbox, index + 1 ); // Add 1 because it takes quest number, not index, blame Handlebars
 	}
 }
 
@@ -50,13 +47,23 @@ function sortTable( table_rows, sort_func ) {
 	// Since appendChild removes the element from its previous parent, the old ordering is erased automatically
 }
 
+function getH2HMainRow( h2h_div ) {
+	return h2h_div.getElementsByClassName( "h2h-row" )[ 0 ];
+}
+
+function getH2HSubrow( h2h_div ) {
+	return h2h_div.getElementsByClassName( "h2h-subrow" )[ 0 ];
+}
+
+function getH2HColumn( h2h_div, column ) {
+	return getH2HMainRow( h2h_div ).getElementsByTagName( "td" )[ column ];
+}
+
 // Check if a row contains spoilers
 function hasSpoiler( row ) {
-	const INDEX_CHAR1 = 3;
-	const INDEX_CHAR2 = 4;
 	const SPOILER_NAME = "Machina Fiora";
-	var elements = row.getElementsByTagName( "td" );
-	return elements[ INDEX_CHAR1 ].textContent === SPOILER_NAME || elements[ INDEX_CHAR2 ].textContent === SPOILER_NAME;
+	
+	return row.textContent.search( SPOILER_NAME ) > -1;
 }
 
 /******************
@@ -165,11 +172,6 @@ for( var index = 0; index < h2h_rows.length; ++index ) {
 
 	if( storage_enabled ) {
 		checkbox.checked = save_data[ index ];
-	}
-	
-	if( checkbox.checked ) {
-		h2h_rows[ index ].classList.add( "row-complete" ); // Color the row if needed
-	} else {
-		h2h_rows[ index ].classList.remove( "row-complete" );
+		onH2HMarkerChange( checkbox, index + 1 );
 	}
 }

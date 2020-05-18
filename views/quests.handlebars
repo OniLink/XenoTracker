@@ -13,19 +13,40 @@
 				<th onclick="sortByArea()">Area</th>
 			</tr>
 		</thead>
-		<tbody>
-			{{#each quests}}
-			<tr id="quest-{{this.quest_num}}" class="quest-row">
-				<td><input type="checkbox" id="quest-comp-{{this.quest_num}}" onchange="onQuestMarkerChange( this, {{this.quest_num}} )"></td>
+		{{#each quests}}
+		<tbody id="quest-{{this.quest_num}}" class="quest-container">
+			<tr class="quest-row">
+				<td rowspan=2><input type="checkbox" id="quest-comp-{{this.quest_num}}" onchange="onQuestMarkerChange( this, {{this.quest_num}} )"></td>
 				<td class="right">{{this.quest_num}}</td>
 				<td>{{this.title}}</td>
 				<td>{{this.client}}</td>
 				<td>{{this.map}}</td>
-				<!-- Subrow: genre, story_ch/beat, prereq_quest_title, fame_region/stars -->
-				<!-- npc_meet1/2, ac_link_char1/char2/status -->
+				<!-- Subrow: genre -->
 			</tr>
-			{{/each}}
+			<tr class="quest-subrow">
+				<td colspan=4 class="left">
+					{{#if this.story_ch}}
+					Story Progress: Ch {{this.story_ch}}, {{this.story_beat}}<br>
+					{{/if}}
+					{{#if this.prereq_quest_title}}
+					Prerequisite Quest: {{this.prereq_quest_title}}<br> <!-- ERROR: only have quest_req_id -->
+					{{/if}}
+					{{#if this.quest_fame_region}}
+					Fame Requirement: {{this.quest_fame_stars}} with {{this.quest_fame_region}}<br>
+					{{/if}}
+					{{#if this.npc_meet1}}
+					Met {{this.npc_meet1}}<br>
+					{{/if}}
+					{{#if this.npc_meet2}}
+					Met {{this.npc_meet2}}<br>
+					{{/if}}
+					{{#if this.ac_link_status}}
+					Affinity Link between {{this.ac_link_char1}} and {{this.ac_link_char2}}: "{{this.ac_link_status}}"<br>
+					{{/if}}
+				</td>
+			</tr>
 		</tbody>
+		{{/each}}
 	</table>
 </section>
 <script src="quests.js"></script>

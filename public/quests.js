@@ -1,7 +1,7 @@
 /***********
  * GLOBALS *
  ***********/
-var quest_rows = document.getElementsByClassName( "quest-row" );
+var quest_rows = document.getElementsByClassName( "quest-container" );
 var save_data = null;
 var storage_enabled = typeof( Storage ) !== "undefined";
 
@@ -9,7 +9,7 @@ var storage_enabled = typeof( Storage ) !== "undefined";
  * CALLBACKS *
  *************/
 function onQuestMarkerChange( checkbox, index ) {
-	var row = checkbox.parentElement.parentElement;
+	var row = checkbox.parentElement.parentElement; // get main row
 	index = index - 1; // Switch from 1-index to 0-index
 	if( checkbox.checked ) {
 		row.classList.add( "row-complete" );
@@ -30,9 +30,7 @@ function onClearQuests() {
 	const INDEX_CHECK = 0;
 
 	for( var index = 0; index < quest_rows.length; ++index ) {
-		var elements = quest_rows[ index ].getElementsByTagName( "td" );
-		var checkbox = elements[ INDEX_CHECK ].getElementsByTagName( "input" )[ 0 ];
-
+		var checkbox = getQuestColumn( quest_rows[ index ], INDEX_CHECK ).getElementsByTagName( "input" )[ 0 ];
 		checkbox.checked = false;
 		onQuestMarkerChange( checkbox, index + 1 ); // Add 1 because it takes quest number, not index, blame Handlebars
 	}
@@ -47,6 +45,18 @@ function sortTable( table_rows, sort_func ) {
 	arrayed_elements.sort( sort_func ); // Sort
 	arrayed_elements.forEach( element => parent.appendChild( element ) ); // And put the elements back in
 	// Since appendChild removes the element from its previous parent, the old ordering is erased automatically
+}
+
+function getQuestMainRow( quest_div ) {
+	return quest_div.getElementsByClassName( "quest-row" )[ 0 ];
+}
+
+function getQuestSubrow( quest_div ) {
+	return quest_div.getElementsByClassName( "quest-subrow" )[ 0 ];
+}
+
+function getQuestColumn( quest_div, column ) {
+	return getQuestMainRow( quest_div ).getElementsByTagName( "td" )[ column ];
 }
 
 /******************
@@ -88,30 +98,43 @@ function sortByArea() {
 	} );
 }
 
+/******************
+ * INIT FUNCTIONS *
+ ******************/
+function initSaveData( storage ) {
+	if( !storage ) {
+		console.log( "Web storage is disabled, unable to store data between sessions" );
+		return [];
+	}
+	
+	if( !localStorage.getItem( "quests" ) ) {
+		return [];
+	}
+	
+	return JSON.parse( localStorage.getItem( "quests" ) );
+}
+
+function initRows( rows, save_data ) {
+	const INDEX_CHECK = 0;
+	
+	for( var index = 0; index < quest_rows.length; ++index ) {
+		// Init rows from storage
+		var elements = quest_rows[ index ].getElementsByTagName( "td" );
+		var checkbox = elements[ INDEX_CHECK ].getElementsByTagName( "input" )[ 0 ];
+
+		if( storage_enabled ) {
+			checkbox.checked = save_data[ index ];
+			onQuestMarkerChange( checkbox, index + 1 ); // Add 1 for above reason
+		}
+	}
+}
+
 /**************
  * INITIALIZE *
  **************/
-// Check local storage
-if( !storage_enabled ) {
-	console.log( "Web storage is disabled, unable to store data between sessions" );
-} else {
-	if( !localStorage.getItem( "quests" ) ) {
-		save_data = [];
-	} else {
-		save_data = JSON.parse( localStorage.getItem( "quests" ) );
-	}
-}
+// Init the save data
+save_data = initSaveData( storage_enabled );
 
 // Initialize rows
-for( var index = 0; index < quest_rows.length; ++index ) {
-	const INDEX_CHECK = 0;
+initRows( quest_rows, save_data );
 
-	// Init rows from storage
-	var elements = quest_rows[ index ].getElementsByTagName( "td" );
-	var checkbox = elements[ INDEX_CHECK ].getElementsByTagName( "input" )[ 0 ];
-
-	if( storage_enabled ) {
-		checkbox.checked = save_data[ index ];
-		onQuestMarkerChange( checkbox, index + 1 ); // Add 1 for above reason
-	}
-}

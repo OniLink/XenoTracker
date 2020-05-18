@@ -1,32 +1,40 @@
 <section>
-	WARNING: This page <em>DOES</em> contain spoilers for Prison Island and
-	beyond! Browse with caution!<br>
+	WARNING: This page <em>DOES</em> contain spoilers for the final party member!
+	Browse with caution!<br>
 	<br>
 	To reveal the spoilers, highlight or mouse over the hidden rows.
 </section>
 <section id="h2h-table">
 	<table>
 		<thead>
-			<th class="hidden-cell"><button onclick="onClearH2Hs()">Reset</button></th>
-			<th onclick="sortByNum()">#</th>
-			<th onclick="sortByTitle()">Title</th>
-			<th colspan=2 onclick="sortByCharacters()">Characters</th>
-			<th onclick="sortByAffinity()">Affinity</th>
+			<tr>
+				<th class="hidden-cell"><button onclick="onClearH2Hs()">Reset</button></th>
+				<th onclick="sortByNum()">#</th>
+				<th onclick="sortByTitle()">Title</th>
+				<th colspan=2 onclick="sortByCharacters()">Characters</th>
+				<th onclick="sortByAffinity()">Affinity</th>
+			</tr>
 		</thead>
-		<tbody>
-			{{#each h2hs}}
-			<tr id="h2h-{{this.sort_id}}" class="h2h-row">
-				<td><input type="checkbox" id="h2h-comp-{{this.sort_id}}" onchange="onH2HMarkerChange( this, {{this.sort_id}} )"></td>
+		{{#each h2hs}}
+		<tbody id="h2h-{{this.sort_id}}" class="h2h-container">
+			<tr class="h2h-row">
+				<td rowspan=2><input type="checkbox" id="h2h-comp-{{this.sort_id}}" onchange="onH2HMarkerChange( this, {{this.sort_id}} )"></td>
 				<td>{{this.sort_id}}</td>
 				<td>{{this.title}}</td>
 				<td>{{this.first_char}}</td>
 				<td>{{this.second_char}}</td>
 				<td>{{this.affinity_color}}</td>
-				<!-- Subrow: Time, story_ch/beat, map -->
-				<!-- Add spoilers -->
 			</tr>
-			{{/each}}
+			<tr class="h2h-subrow">
+				<td colspan=5 class="left">
+					Found: {{this.map}} {{#if this.time}}at night{{/if}}<br>
+					{{#if this.story_ch}}
+						Story Progress: Ch {{this.story_ch}}, {{this.story_beat}}<br>
+					{{/if}}
+				</td>
+			</tr>
 		</tbody>
+		{{/each}}
 	</table>
 </section>
 <script src="h2h.js"></script>
