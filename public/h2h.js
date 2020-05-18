@@ -36,6 +36,20 @@ function onClearH2Hs() {
 	}
 }
 
+function onCollapseClickInternal( index ) {
+	var row = document.getElementById( "h2h-" + String( index ) ); // get the table row
+
+	// Hide/show the subrow
+	var subrow = getH2HSubrow( row ); // get the subrow
+	subrow.classList.toggle( "hidden" ); // hide or show it
+}
+
+function onCollapseClick( button, index ) {
+	button.classList.toggle( "collapse" ); // swap the button icon
+
+	onCollapseClickInternal( index );
+}
+
 /********************
  * HELPER FUNCTIONS *
  ********************/
@@ -174,4 +188,7 @@ for( var index = 0; index < h2h_rows.length; ++index ) {
 		checkbox.checked = save_data[ index ];
 		onH2HMarkerChange( checkbox, index + 1 );
 	}
+
+	// Collapse everything
+	onCollapseClickInternal( index + 1 );
 }

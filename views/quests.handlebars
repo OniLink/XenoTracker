@@ -1,22 +1,32 @@
 <section>
 	WARNING: This page <em>DOES</em> contain implicit spoilers in the story
-	progress column! Exercise caution!
+	progress column! Exercise caution!<br>
+	<br>
+	To see additional details, press the + button. This will give quest
+	prerequisites, things which must be done before the quest becomes available.<br>
+	<br>
+	All information is pulled directly from the game's internal files. Some quests
+	have scripted overrides on what must be done before they become available,
+	which unfortunately I cannot decode. These quests are noted.
 </section>
 <section id="quest-table">
 	<table>
 		<thead>
 			<tr>
 				<th class="hidden-cell"><button onclick="onClearQuests()">Reset</button></th>
-				<th onclick="sortByNum()">#</th>
-				<th onclick="sortByTitle()">Title</th>
-				<th onclick="sortByClient()">Client</th>
-				<th onclick="sortByArea()">Area</th>
+				<th class="sort" onclick="sortByNum()">#</th>
+				<th class="sort" onclick="sortByTitle()">Title</th>
+				<th class="sort" onclick="sortByClient()">Client</th>
+				<th class="sort" onclick="sortByArea()">Area</th>
 			</tr>
 		</thead>
 		{{#each quests}}
 		<tbody id="quest-{{this.quest_num}}" class="quest-container">
 			<tr class="quest-row">
-				<td rowspan=2><input type="checkbox" id="quest-comp-{{this.quest_num}}" onchange="onQuestMarkerChange( this, {{this.quest_num}} )"></td>
+				<td rowspan=2>
+					<button type="button" class="collapsed" onclick="onCollapseClick(this, {{this.quest_num}})"></button>
+					<input type="checkbox" id="quest-comp-{{this.quest_num}}" onchange="onQuestMarkerChange( this, {{this.quest_num}} )">
+				</td>
 				<td class="right">{{this.quest_num}}</td>
 				<td>{{this.title}}</td>
 				<td>{{this.client}}</td>

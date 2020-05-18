@@ -36,6 +36,20 @@ function onClearQuests() {
 	}
 }
 
+function onCollapseClickInternal( index ) {
+	var row = document.getElementById( "quest-" + String( index ) ); // get the table row
+
+	// Hide/show the subrow
+	var subrow = getQuestSubrow( row ); // get the subrow
+	subrow.classList.toggle( "hidden" ); // hide or show it
+}
+
+function onCollapseClick( button, index ) {
+	button.classList.toggle( "collapse" ); // swap the button icon
+
+	onCollapseClickInternal( index );
+}
+
 /********************
  * HELPER FUNCTIONS *
  ********************/
@@ -126,6 +140,9 @@ function initRows( rows, save_data ) {
 			checkbox.checked = save_data[ index ];
 			onQuestMarkerChange( checkbox, index + 1 ); // Add 1 for above reason
 		}
+
+		// Collapse everything
+		onCollapseClickInternal( index + 1 );
 	}
 }
 
@@ -137,4 +154,3 @@ save_data = initSaveData( storage_enabled );
 
 // Initialize rows
 initRows( quest_rows, save_data );
-

@@ -2,23 +2,29 @@
 	WARNING: This page <em>DOES</em> contain spoilers for the final party member!
 	Browse with caution!<br>
 	<br>
-	To reveal the spoilers, highlight or mouse over the hidden rows.
+	To reveal the spoilers, highlight or mouse over the hidden rows.<br>
+	<br>
+	To see additional details, press the + button. This will give the area the
+	Heart to Heart can be found in as well as any prerequisites.
 </section>
 <section id="h2h-table">
 	<table>
 		<thead>
 			<tr>
 				<th class="hidden-cell"><button onclick="onClearH2Hs()">Reset</button></th>
-				<th onclick="sortByNum()">#</th>
-				<th onclick="sortByTitle()">Title</th>
-				<th colspan=2 onclick="sortByCharacters()">Characters</th>
-				<th onclick="sortByAffinity()">Affinity</th>
+				<th class="sort" onclick="sortByNum()">#</th>
+				<th class="sort" onclick="sortByTitle()">Title</th>
+				<th class="sort" colspan=2 onclick="sortByCharacters()">Characters</th>
+				<th class="sort" onclick="sortByAffinity()">Affinity</th>
 			</tr>
 		</thead>
 		{{#each h2hs}}
 		<tbody id="h2h-{{this.sort_id}}" class="h2h-container">
 			<tr class="h2h-row">
-				<td rowspan=2><input type="checkbox" id="h2h-comp-{{this.sort_id}}" onchange="onH2HMarkerChange( this, {{this.sort_id}} )"></td>
+				<td rowspan=2>
+					<button type="button" class="collapsed" onclick="onCollapseClick(this, {{this.sort_id}})"></button>
+					<input type="checkbox" id="h2h-comp-{{this.sort_id}}" onchange="onH2HMarkerChange( this, {{this.sort_id}} )">
+				</td>
 				<td>{{this.sort_id}}</td>
 				<td>{{this.title}}</td>
 				<td>{{this.first_char}}</td>

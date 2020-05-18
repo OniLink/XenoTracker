@@ -39,8 +39,16 @@ table {
 	border-collapse: collapse;
 }
 
+tbody:nth-of-type(odd) {
+	background-color: lightgray;
+}
+
+/*tbody:nth-of-type(odd) tr.quest-subrow {
+	background-color: gray;
+}*/
+
 th, td {
-	border: 1px solid black;
+	border: none;
 	padding: 4px;
 }
 
@@ -56,6 +64,19 @@ td.right {
 	text-align: right;
 }
 
+.collapsed:after {
+	content: '\002B'; /* + sign */
+	font-weight: bold;
+}
+
+.collapse:after {
+	content: '\2212'; /* - sign */
+}
+
+.hidden {
+	display: none;
+}
+
 .hidden-cell {
 	border: 0px;
 }
@@ -68,6 +89,10 @@ td.right {
 	background-color: gray;
 	color: gray;
 	transition: background-color 0.1s, color 0.1s;
+}
+
+.sort {
+	cursor: pointer;
 }
 
 tr {
