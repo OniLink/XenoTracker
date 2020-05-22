@@ -1,1 +1,38 @@
-Sample
+<section>
+	All 157 unique monsters are listed here.
+</section>
+<section id="um-table">
+	<table>
+		<thead>
+			<tr>
+				<td class="hidden-cell"><button onclick="onClearUMs()">Reset</button></td>
+				<th class="sort" onclick="sortByNum()">#</th>
+				<th class="sort" onclick="sortByName()">Name</th>
+				<th class="sort" onclick="sortByLevel()">Level</th>
+				<th class="sort" onclick="sortByArea()">Area</th>
+			</tr>
+		</thead>
+		{{#each ums}}
+		<tbody id="um-{{this.id}}" class="um-container">
+			<tr class="um-row">
+				<td rowspan=2>
+					<button type="button" class="collapsed" onclick="onCollapseClick(this, {{this.id}})"></button>
+					<input type="checkbox" id="um-comp-{{this.sort_id}}" onchange="onUMMarkerChange( this, {{this.id}} )">
+				</td>
+				<td>{{this.id}}</td>
+				<td>{{this.name}}</td>
+				<td>{{this.level}}</td>
+				<td>{{this.area}}</td>
+			</tr>
+			<tr class="um-subrow">
+				<td colspan=4 class="left">
+					{{#if this.time}}
+					Time Found: {{this.time}}<br>
+					{{/if}}
+				</td>
+			</tr>
+		</tbody>
+		{{/each}}
+	</table>
+</section>
+<script src="um.js"></script>

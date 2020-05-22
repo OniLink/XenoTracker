@@ -15,7 +15,7 @@ app.use( express.static( 'public' ) ); // Search directory for public files
 
 var quest_db = JSON.parse( fs.readFileSync( 'public/quests.json' ) );
 var h2h_db = JSON.parse( fs.readFileSync( 'public/h2h.json' ) );
-var um_db = null;
+var um_db = JSON.parse( fs.readFileSync( 'public/ums.json' ) );
 
 app.get( '/', function( req, res ) {
 	res.render( 'index' );
