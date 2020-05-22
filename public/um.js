@@ -98,8 +98,8 @@ function sortByLevel() {
 	sortTable( um_rows, function( row1, row2 ) {
 		const INDEX_LEVEL = 3;
 		var level_1 = row1.getElementsByTagName( "td" )[ INDEX_LEVEL ].textContent;
-		var level_2 = row1.getElementsByTagName( "td" )[ INDEX_LEVEL ].textContent;
-		return level_1 > level_2;
+		var level_2 = row2.getElementsByTagName( "td" )[ INDEX_LEVEL ].textContent;
+		return parseInt( level_1 ) > parseInt( level_2 );
 	} );
 }
 
@@ -108,7 +108,7 @@ function sortByArea() {
 		const AREAS = [
 			"Colony 9",
 			"Tephra Cave",
-			"Bionis' Leg",
+			"Bionis’ Leg",
 			"Colony 6",
 			"Ether Mine",
 			"Satorl Marsh",
@@ -123,7 +123,7 @@ function sortByArea() {
 			"Mechonis Field",
 			"Central Factory",
 			"Agniratha",
-			"Bionis' Interior",
+			"Bionis’ Interior",
 			"Prison Island"
 		];
 
